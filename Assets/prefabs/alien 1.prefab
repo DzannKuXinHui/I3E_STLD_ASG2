@@ -174,7 +174,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 849abe3fd8028094883c2294dc511d07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  agent: {fileID: 0}
+  agent: {fileID: 902307776119583365}
   player: {fileID: 0}
   whatIsGround:
     serializedVersion: 2

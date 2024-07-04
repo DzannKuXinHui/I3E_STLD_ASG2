@@ -6,7 +6,7 @@ public class UiInteractions : MonoBehaviour
 {
     public void ClickFunction()
     {
-        Debug.Log("Button was clicked");
+        Application.Quit();
     }
 }
 

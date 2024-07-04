@@ -4,67 +4,44 @@ using UnityEngine;
 using TMPro;
 
 public class Player : MonoBehaviour
-{  
+{
     [Header("References")]
     [SerializeField] Transform playerCamera;
     [SerializeField] float interactionDistance;
     [SerializeField] TextMeshProUGUI interactionText;
+    [SerializeField] TextMeshProUGUI collectCoreText;
 
-    SpecialCollectible currentSpecialCollectible;
-    Collectible collectedCrystal;
+    // References to interactable objects
+    private SpecialCollectible currentSpecialCollectible;
+    private Collectible currentCollectible;
+    private Door currentDoor;
+    private Placeable currentPlaceable;
+    private EnterShip currentShip;
+    private Button currentButton;
 
-    Collectible collectedArtifact;
-
-    Collectible collectedBattery;
-
-    Door currentDoor;
-
-    Placeable currentPlaceable;
-
+    // Animator reference
     public Animator animator;
-
-    Collectible currentCollectible;
-
-    
-
-    
-    public void OnInteract()
-    {
-        if(currentSpecialCollectible != null)
-        {
-            currentSpecialCollectible.Collect();
-        }
-
-        if(currentCollectible != null)
-        {
-            currentCollectible.Collect();
-        }
-
-        if(currentDoor != null)
-        {
-            currentDoor.OpenDoor();
-        }
-
-        if(currentPlaceable != null)
-        {
-            currentPlaceable.Place();
-        }
-    }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        // Initialize references
+        interactionText.gameObject.SetActive(false);
+        collectCoreText.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
         RaycastHit hitInfo;
-        if(Physics.Raycast(playerCamera.position, playerCamera.forward, out hitInfo, interactionDistance))
+
+        // Perform raycast to detect interactable objects
+        if (Physics.Raycast(playerCamera.position, playerCamera.forward, out hitInfo, interactionDistance))
         {
             Debug.Log(hitInfo.collider.gameObject.name);
-            if(hitInfo.transform.TryGetComponent<SpecialCollectible>(out currentSpecialCollectible))
+
+            // Check for SpecialCollectible
+            if (hitInfo.transform.TryGetComponent(out currentSpecialCollectible))
             {
                 interactionText.gameObject.SetActive(true);
             }
@@ -73,7 +50,8 @@ public class Player : MonoBehaviour
                 currentSpecialCollectible = null;
             }
 
-            if(hitInfo.transform.TryGetComponent<Collectible>(out currentCollectible))
+            // Check for Collectible
+            if (hitInfo.transform.TryGetComponent(out currentCollectible))
             {
                 interactionText.gameObject.SetActive(true);
             }
@@ -82,7 +60,8 @@ public class Player : MonoBehaviour
                 currentCollectible = null;
             }
 
-            if(hitInfo.transform.TryGetComponent<Door>(out currentDoor))
+            // Check for Door
+            if (hitInfo.transform.TryGetComponent(out currentDoor))
             {
                 interactionText.gameObject.SetActive(true);
             }
@@ -91,7 +70,8 @@ public class Player : MonoBehaviour
                 currentDoor = null;
             }
 
-            if(hitInfo.transform.TryGetComponent<Placeable>(out currentPlaceable))
+            // Check for Placeable
+            if (hitInfo.transform.TryGetComponent(out currentPlaceable))
             {
                 interactionText.gameObject.SetActive(true);
             }
@@ -99,10 +79,78 @@ public class Player : MonoBehaviour
             {
                 currentPlaceable = null;
             }
+
+            // Check for EnterShip
+            if (hitInfo.transform.TryGetComponent(out currentShip))
+            {
+                interactionText.gameObject.SetActive(true);
+            }
+            else
+            {
+                currentShip = null;
+            }
+
+            // Check for Button and GameManager condition
+            if (hitInfo.transform.TryGetComponent(out currentButton) && GameManager.Instance.collectedCore == true)
+            {
+                interactionText.gameObject.SetActive(true);
+            }
+            else if (hitInfo.transform.TryGetComponent(out currentButton) && GameManager.Instance.collectedCore == false)
+            {
+                collectCoreText.gameObject.SetActive(true);
+            }
+            else
+            {
+                currentButton = null;
+            }
         }
         else
         {
+            // No object in interaction distance, deactivate UI texts
             interactionText.gameObject.SetActive(false);
+            collectCoreText.gameObject.SetActive(false);
+
+            // Reset references
+            currentSpecialCollectible = null;
+            currentCollectible = null;
+            currentDoor = null;
+            currentPlaceable = null;
+            currentShip = null;
+            currentButton = null;
+        }
+    }
+
+    public void OnInteract()
+    {
+        // Handle interactions based on detected objects
+        if (currentSpecialCollectible != null)
+        {
+            currentSpecialCollectible.Collect();
+        }
+
+        if (currentCollectible != null)
+        {
+            currentCollectible.Collect();
+        }
+
+        if (currentDoor != null)
+        {
+            currentDoor.OpenDoor();
+        }
+
+        if (currentPlaceable != null)
+        {
+            currentPlaceable.Place();
+        }
+
+        if (currentShip != null)
+        {
+            currentShip.EnterTheShip();
+        }
+
+        if (currentButton != null && GameManager.Instance.collectedCore == true)
+        {
+            currentButton.WinGame();
         }
     }
 }
