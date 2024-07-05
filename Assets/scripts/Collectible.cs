@@ -1,3 +1,6 @@
+//Name: Dzann Ku Xin Hui
+//File Name: Collectible.cs
+//File Desc: Handles the collection behavior for different types of collectibles in the game.
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

@@ -1,3 +1,7 @@
+//Name: Dzann Ku Xin Hui
+//File Name: Door.cs
+//File Desc: Controls the opening animation and sound of a door in the game.
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

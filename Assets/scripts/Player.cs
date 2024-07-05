@@ -1,3 +1,7 @@
+//Name: Dzann Ku Xin Hui
+//File Name: Player.cs
+//File Desc: Manages player raycast interactions with various objects in the game environment.
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,10 +10,10 @@ using TMPro;
 public class Player : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] Transform playerCamera;
-    [SerializeField] float interactionDistance;
-    [SerializeField] TextMeshProUGUI interactionText;
-    [SerializeField] TextMeshProUGUI collectCoreText;
+    [SerializeField] Transform playerCamera; // Reference to the player's camera
+    [SerializeField] float interactionDistance; // Distance within which the player can interact with objects
+    [SerializeField] TextMeshProUGUI interactionText; // UI text for interaction prompt
+    [SerializeField] TextMeshProUGUI collectCoreText; // UI text for collect core prompt
 
     // References to interactable objects
     private SpecialCollectible currentSpecialCollectible;
@@ -19,13 +23,14 @@ public class Player : MonoBehaviour
     private EnterShip currentShip;
     private Button currentButton;
 
+    public GameObject winningScreen;
     // Animator reference
     public Animator animator;
 
     // Start is called before the first frame update
     void Start()
     {
-        // Initialize references
+        // Initialize references and hide UI texts
         interactionText.gameObject.SetActive(false);
         collectCoreText.gameObject.SetActive(false);
     }
@@ -120,9 +125,9 @@ public class Player : MonoBehaviour
         }
     }
 
+    // If object not null, make interact binding call function.
     public void OnInteract()
     {
-        // Handle interactions based on detected objects
         if (currentSpecialCollectible != null)
         {
             currentSpecialCollectible.Collect();
@@ -151,6 +156,7 @@ public class Player : MonoBehaviour
         if (currentButton != null && GameManager.Instance.placedCore == true)
         {
             currentButton.WinGame();
+            winningScreen.SetActive(true);
         }
     }
 }

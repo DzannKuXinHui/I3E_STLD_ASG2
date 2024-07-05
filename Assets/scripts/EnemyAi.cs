@@ -1,3 +1,7 @@
+//Name: Dzann Ku Xin Hui
+//File Name: EnemyAi.cs
+//File Desc: Controls the behavior of an enemy AI in the game, including patrolling, chasing, and attacking the player.
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

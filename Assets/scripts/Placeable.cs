@@ -1,3 +1,7 @@
+//Name: Dzann Ku Xin Hui
+//File Name: Placeable.cs
+//File Desc: Manages the placement of a core GameObject when triggered, based on GameManager state.
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
