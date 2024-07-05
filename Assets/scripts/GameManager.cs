@@ -11,9 +11,13 @@ public class GameManager : MonoBehaviour
     public bool collectedArtifact;
     public bool collectedCrystal;
     public bool collectedCore;
+    private AudioSource audioSource;
+    public bool placedCore;
 
     private void Awake()
     {
+        audioSource = GameObject.Find("BGM").GetComponent<AudioSource>();
+        audioSource.Play(0);
         if (Instance == null)
         {
             Instance = this;
@@ -28,7 +32,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame

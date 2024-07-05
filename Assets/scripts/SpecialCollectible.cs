@@ -9,6 +9,8 @@ public class SpecialCollectible : MonoBehaviour
     public bool specialCollected;
     private bool inSpecialRange;
     [SerializeField] GameObject enemySpawn;
+    private AudioSource audioSource;
+    public AudioClip fasterBGM;
 
     void Update()
     {
@@ -17,9 +19,16 @@ public class SpecialCollectible : MonoBehaviour
 
     public void Collect()
     {
+        audioSource.clip = fasterBGM; 
+        audioSource.Play(0);
         GameManager.Instance.collectedCore = true;
         Debug.Log("SpecialCollected becomes true");
         Instantiate(enemySpawn, transform.position, enemySpawn.transform.rotation);
         gameObject.SetActive(false); // Deactivate the collectible
+    }
+
+    private void Awake() 
+    {
+        audioSource = GameObject.Find("BGM").GetComponent<AudioSource>();
     }
 }

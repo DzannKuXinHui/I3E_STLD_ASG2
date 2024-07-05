@@ -18,10 +18,12 @@ public class PlayerHealth : MonoBehaviour
     public Image[] hearts;
     public Sprite fullHeart;
     public Sprite emptyHeart;
-
+    private AudioSource audioSource;
+    public AudioClip audioClip;
 
     private void Awake()
     {
+        audioSource = GameObject.Find("BGM").GetComponent<AudioSource>();
         currentHealth = maxHealth;
     }
 
@@ -63,6 +65,7 @@ public class PlayerHealth : MonoBehaviour
     private void Die()
     {
         // Handle player death (e.g., respawn, game over screen, etc.)
+        audioSource.PlayOneShot(audioClip);
         Debug.Log("Player died!");
         deathScreen.SetActive(true);
         StartCoroutine(ShowButtons(3f));

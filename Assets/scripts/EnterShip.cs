@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement; 
+using UnityEngine.SceneManagement;
 
 public class EnterShip : MonoBehaviour
 {
-    public int targetSceneIndex; 
+    public int targetSceneIndex; // Index of the target scene to load
+
     // Start is called before the first frame update
     void Start()
     {
@@ -20,7 +21,6 @@ public class EnterShip : MonoBehaviour
 
     public void EnterTheShip()
     {
-        SceneManager.LoadScene(targetSceneIndex);
+        SceneManager.LoadScene(targetSceneIndex); // Load  scene with specified index num
     }
-
 }

@@ -6,11 +6,18 @@ public class SpikesDmg : MonoBehaviour
 {
     public PlayerHealth playerHealth; // Reference to the PlayerHealth script
 
-    void OnCollisionEnter(Collision collision) // Updated parameter type to Collision
+    private void Awake() 
     {
-        if (collision.collider.CompareTag("Player")) // Ensure we check the collider's tag
+        playerHealth = GameObject.Find("PlayerCapsule").GetComponent<PlayerHealth>();
+    }
+    void OnTriggerEnter(Collider other) // Updated parameter type to Collision
+    {
+        Debug.Log("collided with spike");
+        if (other.CompareTag("Player")) // Ensure we check the collider's tag
         {
             playerHealth.TakeDamage(1); // Call the method to reduce the player's health by 1
         }
     }
+
+    
 }

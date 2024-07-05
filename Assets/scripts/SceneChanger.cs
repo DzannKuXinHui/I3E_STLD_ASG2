@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 public class SceneChanger : MonoBehaviour
 {
     public int targetSceneIndex;
+    public GameObject deathScreen;
+    public GameObject pauseScreen;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -20,5 +22,7 @@ public class SceneChanger : MonoBehaviour
     public void ChangeScene()
     {
         SceneManager.LoadScene(targetSceneIndex);
+        deathScreen.SetActive(false);
+        pauseScreen.SetActive(false);
     }
 }

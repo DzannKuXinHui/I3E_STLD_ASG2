@@ -91,11 +91,11 @@ public class Player : MonoBehaviour
             }
 
             // Check for Button and GameManager condition
-            if (hitInfo.transform.TryGetComponent(out currentButton) && GameManager.Instance.collectedCore == true)
+            if (hitInfo.transform.TryGetComponent(out currentButton) && GameManager.Instance.placedCore == true)
             {
                 interactionText.gameObject.SetActive(true);
             }
-            else if (hitInfo.transform.TryGetComponent(out currentButton) && GameManager.Instance.collectedCore == false)
+            else if (hitInfo.transform.TryGetComponent(out currentButton) && GameManager.Instance.placedCore == false)
             {
                 collectCoreText.gameObject.SetActive(true);
             }
@@ -148,7 +148,7 @@ public class Player : MonoBehaviour
             currentShip.EnterTheShip();
         }
 
-        if (currentButton != null && GameManager.Instance.collectedCore == true)
+        if (currentButton != null && GameManager.Instance.placedCore == true)
         {
             currentButton.WinGame();
         }

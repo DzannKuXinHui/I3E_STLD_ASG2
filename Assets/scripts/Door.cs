@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class Door : MonoBehaviour
 {
+    public Animator animator; // Animator for door animation
+    private AudioSource audioSource; // AudioSource to play sound
+    public AudioClip audioClip; // AudioClip to play when door opens
 
-    public Animator animator;   
     // Start is called before the first frame update
     void Start()
     {
-        
+        audioSource = GameObject.Find("BGM").GetComponent<AudioSource>(); // Find the AudioSource on the BGM GameObject
     }
 
     // Update is called once per frame
@@ -20,6 +22,7 @@ public class Door : MonoBehaviour
 
     public void OpenDoor()
     {
-        animator.SetBool("shipdoor", true);
+        audioSource.PlayOneShot(audioClip); // Play door opening sound
+        animator.SetBool("shipdoor", true); // Trigger door open animation
     }
 }

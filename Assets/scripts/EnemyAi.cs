@@ -6,54 +6,52 @@ using UnityEngine.AI;
 public class EnemyAi : MonoBehaviour
 {
     [Header("Components")]
-    public NavMeshAgent agent;
-    public Transform player;
-    public LayerMask whatIsGround, whatIsPlayer;
+    public NavMeshAgent agent; // navMeshAgent component for navigation
+    public Transform player; // Reference to the player
+    public LayerMask whatIsGround, whatIsPlayer; // Layers for ground and player detection
 
     [Header("Patrolling")]
-    public Vector3 walkPoint;
-    bool walkPointSet;
-    public float walkPointRange;
+    public Vector3 walkPoint; // Target point for patrolling
+    bool walkPointSet; // Whether a walk point is set
+    public float walkPointRange; // Range within which to set walk points
 
     [Header("Attacking")]
-    public float timeBetweenAttacks;
-    bool alreadyAttacked;
-    public int attackDamage; // amount of damage enemy does
+    public float timeBetweenAttacks; // Time between attacks
+    bool alreadyAttacked; // Whether the enemy has already attacked
+    public int attackDamage; // Amount of damage enemy does
 
     [Header("States")]
-    public float sightRange, attackRange;
-    public bool playerInSightRange, playerInAttackRange;
+    public float sightRange, attackRange; // Ranges for sight and attack
+    public bool playerInSightRange, playerInAttackRange; // Whether player is in sight or attack range
 
     [Header("Enemy Health")]
-    public int health;
-
+    public int health; // Enemy health
 
     private void Awake()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
-        agent = GetComponent<NavMeshAgent>();
+        player = GameObject.FindGameObjectWithTag("Player").transform; // Find player by tag
+        agent = GetComponent<NavMeshAgent>(); // Get NavMeshAgent component
     }
 
     private void Update()
     {
-
-        // check for player in sight and attack range
+        // Check for player in sight and attack range
         playerInSightRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);
         playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer);
 
         if (!playerInSightRange && !playerInAttackRange)
         {
-            Patroling();
+            Patroling(); // Patrol if player is not in sight or attack range
         }
 
         if (playerInSightRange && !playerInAttackRange)
         {
-            ChasePlayer();
+            ChasePlayer(); // chase player if in sight range but not attack range
         }
 
         if (playerInAttackRange && playerInSightRange)
         {
-            AttackPlayer();
+            AttackPlayer(); // Attack player if in both sight and attack range
         }
     }
 
@@ -61,12 +59,12 @@ public class EnemyAi : MonoBehaviour
     {
         if (!walkPointSet)
         {
-            SearchWalkPoint();
+            SearchWalkPoint(); // find a new walk point if not set
         }
 
         if (walkPointSet)
         {
-            agent.SetDestination(walkPoint);
+            agent.SetDestination(walkPoint); // move to the walk point
         }
 
         Vector3 distanceToWalkPoint = transform.position - walkPoint;
@@ -74,7 +72,7 @@ public class EnemyAi : MonoBehaviour
         // Check if reached walk point
         if (distanceToWalkPoint.magnitude < 1f)
         {
-            walkPointSet = false;
+            walkPointSet = false; // Reset walk point if reached
         }
     }
 
@@ -86,19 +84,19 @@ public class EnemyAi : MonoBehaviour
         walkPoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
 
         if (Physics.Raycast(walkPoint, -transform.up, 2f, whatIsGround))
-            walkPointSet = true;
+            walkPointSet = true; // Set walk point if on ground
     }
 
     private void ChasePlayer()
     {
-        agent.SetDestination(player.position);
+        agent.SetDestination(player.position); // Move towards player
     }
 
     private void AttackPlayer()
     {
         agent.SetDestination(transform.position); // Stop moving
 
-        transform.LookAt(player); // Face the player
+        transform.LookAt(player); // Face player
 
         if (!alreadyAttacked)
         {
@@ -106,17 +104,17 @@ public class EnemyAi : MonoBehaviour
             PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
             if (playerHealth != null)
             {
-                playerHealth.TakeDamage(attackDamage);
+                playerHealth.TakeDamage(attackDamage); // Apply damage to player
             }
 
             alreadyAttacked = true;
-            Invoke(nameof(ResetAttack), timeBetweenAttacks);
+            Invoke(nameof(ResetAttack), timeBetweenAttacks); // Reset attack after a delay
         }
     }
 
     private void ResetAttack()
     {
-        alreadyAttacked = false;
+        alreadyAttacked = false; // Allow attacking again
     }
 
     public void TakeDamage(int damage)
@@ -124,13 +122,13 @@ public class EnemyAi : MonoBehaviour
         health -= damage;
         if (health <= 0)
         {
-            Invoke(nameof(DestroyEnemy), 0.5f);
+            Invoke(nameof(DestroyEnemy), 0.5f); // Destroy enemy after delay if health is 0 or lesss
         }
     }
 
     private void DestroyEnemy()
     {
-        Destroy(gameObject);
+        Destroy(gameObject); // Destroy enemy object
     }
 
     private void Start()
